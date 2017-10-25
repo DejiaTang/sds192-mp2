@@ -1,6 +1,6 @@
 ---
 title: "Mini-Project 2"
-author: "Dejia Tang"
+author: "Dejia Tang, Zicong Wei"
 date: "October 31, 2017"
 output: html_document
 ---
