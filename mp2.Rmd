@@ -5,16 +5,34 @@ date: "October 31, 2017"
 output: html_document
 ---
 
+```{r message=FALSE, echo=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggthemes)
+library(ggrepel)
+```
 
 ## Loading the data
 
-This project is so interesting and relevant to my life!
-
-hahahaha dejia dejia dejia !
-
-```{r, include=FALSE}
+```{r, echo=TRUE}
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
+
+candidates <- candidates %>%
+  left_join(house_elections, by=c('cand_id' = 'fec_id' ))
+
+df_candidate <- candidates %>%
+  mutate(type = ifelse(cand_party_affiliation == 'DEM', ifelse(ge_winner == 'W', 'dem_w', 'dem_nw'),ifelse(ge_winner == 'W', 'rep_w', 'rep_nw'))) %>%
+  filter(!is.na(type)) %>%
+  select(cand_id, type)
+
+glimpse(df_candidate)
+
+df_contributions <- contributions %>%
+  left_join(committees, by='cmte_id') %>%
+  select(cmte_id, transaction_type, transaction_amt, cand_id.x, org_type) %>%
+  filter(!is.na(transaction_type), !is.na(org_type))
+
+glimpse(df_contributions)
 ```
