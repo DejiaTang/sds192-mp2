@@ -31,8 +31,47 @@ glimpse(df_candidate)
 
 df_contributions <- contributions %>%
   left_join(committees, by='cmte_id') %>%
-  select(cmte_id, transaction_type, transaction_amt, cand_id.x, org_type) %>%
-  filter(!is.na(transaction_type), !is.na(org_type))
+  select(cmte_id, transaction_type, transaction_amt, cand_id.x, org_type)
 
 glimpse(df_contributions)
+
+
+df1 <- df_candidate %>%
+  left_join(df_contributions, by=c('cand_id' = 'cand_id.x' )) %>%
+  arrange(cand_id) %>%
+  filter(!is.na(transaction_type), !is.na(org_type), org_type !='', transaction_type!='24K') %>%
+  group_by(type, transaction_type) %>%
+  summarize(type_amt = sum(transaction_amt))
+
+my_plot <- df1 %>%
+  ggplot(aes(x = transaction_type, y = type_amt, fill= type)) +
+  geom_bar(stat="identity", position='fill')
+
+my_plot
+
+my_plot2 <- df1 %>%
+  ggplot(aes(x = type, y = type_amt, fill= transaction_type)) +
+  geom_bar(stat="identity", position='fill')
+
+my_plot2
+
+df2 <- df_candidate %>%
+  left_join(df_contributions, by=c('cand_id' = 'cand_id.x' )) %>%
+  arrange(cand_id) %>%
+  filter(!is.na(transaction_type), !is.na(org_type), org_type !='', transaction_type!='24K') %>%
+  group_by(type, org_type) %>%
+  summarize(type_amt = sum(transaction_amt))
+
+my_plot3 <- df2 %>%
+  ggplot(aes(x = org_type, y = type_amt, fill= type)) +
+  geom_bar(stat="identity", position='fill')
+
+my_plot3
+
+my_plot4 <- df2 %>%
+  ggplot(aes(x = type, y = type_amt, fill= org_type)) +
+  geom_bar(stat="identity", position='fill')
+
+my_plot4
+
 ```
