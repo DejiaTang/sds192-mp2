@@ -11,14 +11,15 @@ library(ggthemes)
 library(ggrepel)
 ```
 
-## Loading the data
-
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
+```
 
+## Data Wrangling
+```{r message=FALSE, echo=TRUE, warning=FALSE}
 candidates <- candidates %>%
   left_join(house_elections, by=c('cand_id' = 'fec_id' ))
 
@@ -43,23 +44,6 @@ df1 <- df_candidate %>%
   group_by(type, transaction_type) %>%
   summarize(type_amt = sum(transaction_amt))
 
-my_plot <- df1 %>%
-  ggplot(aes(x = transaction_type, y = type_amt, fill= type)) +
-  geom_bar(stat="identity", position='fill')
-
-#my_plot
-
-my_plot2 <- df1 %>%
-  ggplot(aes(x = type, y = type_amt, fill= transaction_type)) +
-  geom_bar(stat="identity", position='fill') +
-  scale_fill_brewer(palette = "Paired", name = "Transaction Type", labels = c("Independent expenditure opposing election", "Independent expenditure advocating election", "Communication cost", "Communication cost against", "In-kind contribution made to registered filer")) +
-  scale_x_discrete(labels = c("Democrat\nNot Elected","Democrat\nElected","Republican\nNot Elected","Republican\nElected")) +
-  theme_bw() +
-  theme(axis.title = element_blank()) +
-  ggtitle("The Purpose of Transaction in Election Campaign")
-
-my_plot2
-
 df2 <- df_candidate %>%
   left_join(df_contributions, by=c('cand_id' = 'cand_id.x' )) %>%
   arrange(cand_id) %>%
@@ -67,22 +51,54 @@ df2 <- df_candidate %>%
   filter(org_type!="V", org_type!="W") %>%
   group_by(type, org_type) %>%
   summarize(type_amt = sum(transaction_amt))
+```
+
+## Creating Plots
+```{r message=FALSE, echo=TRUE, warning=FALSE}
+my_plot <- df1 %>%
+  ggplot(aes(x = transaction_type, y = type_amt, fill= type)) +
+  geom_bar(stat="identity", position='fill', alpha=0.8)
+
+my_plot2 <- df1 %>%
+  ggplot(aes(x = type, y = type_amt, fill= transaction_type)) +
+  geom_bar(stat="identity", position='fill', alpha=0.8) +
+  scale_fill_brewer(
+  	palette = "Paired",
+  	name = "Transaction Type",
+  	labels = c("Independent expenditure\nopposing election", "Independent expenditure\nadvocating election", "Communication\ncost", "Communication\ncost against", "In-kind contribution made\nto registered filer")) +
+  scale_x_discrete(labels = c("Democrat\nNot Elected","Democrat\nElected","Republican\nNot Elected","Republican\nElected")) +
+  scale_y_continuous(
+    breaks = c(0, 0.25, 0.5, 0.75, 1),
+    labels = c('0%', '25%', '50%','75%',  '100%'),
+    expand = c(0, 0)
+  ) +
+  theme_fivethirtyeight() +
+  theme(panel.border = element_blank(), axis.title = element_blank()) +
+  ggtitle("Distribution of Types of Contributions\nin Election Campaign")
 
 my_plot3 <- df2 %>%
   ggplot(aes(x = org_type, y = type_amt, fill= type)) +
-  geom_bar(stat="identity", position='fill')
-
-#my_plot3
+  geom_bar(stat="identity", position='fill', alpha=0.8)
 
 my_plot4 <- df2 %>%
   ggplot(aes(x = type, y = type_amt, fill= org_type)) +
-  geom_bar(stat="identity", position='fill') +
+  geom_bar(stat="identity", position='fill', alpha=0.8) +
   scale_x_discrete(labels = c("Democrat\nNot Elected","Democrat\nElected","Republican\nNot Elected","Republican\nElected")) +
-  theme_bw() +
-  theme(axis.title = element_blank()) +
-  scale_fill_brewer(palette = "Set2", name = "Organization Type", labels = c("Corporation", "Labor organization", "Membership organization", "Trade association")) +
-  ggtitle("Interest Groups behind Transaction in Election Campaign")
-
+  scale_y_continuous(
+    breaks = c(0, 0.25, 0.5, 0.75, 1),
+    labels = c('0%', '25%', '50%','75%',  '100%'),
+    expand = c(0, 0)
+  ) +
+  theme_fivethirtyeight() +
+  theme(panel.border = element_blank(), axis.title = element_blank()) +
+  scale_fill_manual(
+  	values = c("#f7c143", "#556eed", "#f2763c", "#a5a5a5"),
+  	name = "Organization Type",
+  	labels = c("Corporation", "Labor organization", "Membership organization", "Trade association")) +
+  ggtitle("Distribution of Interest Groups behind Contributions\nin Election Campaign")
+```
+## Present Plots
+```{r message=FALSE, echo=TRUE, warning=FALSE, fig.align="center", fig.width=10, fig.height=6.5}
+my_plot2
 my_plot4
-
 ```
