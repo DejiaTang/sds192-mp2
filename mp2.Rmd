@@ -39,7 +39,7 @@ glimpse(df_contributions)
 df1 <- df_candidate %>%
   left_join(df_contributions, by=c('cand_id' = 'cand_id.x' )) %>%
   arrange(cand_id) %>%
-  filter(!is.na(transaction_type), !is.na(org_type), org_type !='', transaction_type!='24K') %>%
+  filter(!is.na(transaction_type), !is.na(org_type), org_type !='', transaction_type!='24K', transaction_type!='24C') %>%
   group_by(type, transaction_type) %>%
   summarize(type_amt = sum(transaction_amt))
 
@@ -47,11 +47,16 @@ my_plot <- df1 %>%
   ggplot(aes(x = transaction_type, y = type_amt, fill= type)) +
   geom_bar(stat="identity", position='fill')
 
-my_plot
+#my_plot
 
 my_plot2 <- df1 %>%
   ggplot(aes(x = type, y = type_amt, fill= transaction_type)) +
-  geom_bar(stat="identity", position='fill')
+  geom_bar(stat="identity", position='fill') +
+  scale_fill_brewer(palette = "Paired", name = "Transaction Type", labels = c("Independent expenditure opposing election", "Independent expenditure advocating election", "Communication cost", "Communication cost against", "In-kind contribution made to registered filer")) +
+  scale_x_discrete(labels = c("Democrat\nNot Elected","Democrat\nElected","Republican\nNot Elected","Republican\nElected")) +
+  theme_bw() +
+  theme(axis.title = element_blank()) +
+  ggtitle("The Purpose of Transaction in Election Campaign")
 
 my_plot2
 
@@ -59,6 +64,7 @@ df2 <- df_candidate %>%
   left_join(df_contributions, by=c('cand_id' = 'cand_id.x' )) %>%
   arrange(cand_id) %>%
   filter(!is.na(transaction_type), !is.na(org_type), org_type !='', transaction_type!='24K') %>%
+  filter(org_type!="V", org_type!="W") %>%
   group_by(type, org_type) %>%
   summarize(type_amt = sum(transaction_amt))
 
@@ -66,11 +72,16 @@ my_plot3 <- df2 %>%
   ggplot(aes(x = org_type, y = type_amt, fill= type)) +
   geom_bar(stat="identity", position='fill')
 
-my_plot3
+#my_plot3
 
 my_plot4 <- df2 %>%
   ggplot(aes(x = type, y = type_amt, fill= org_type)) +
-  geom_bar(stat="identity", position='fill')
+  geom_bar(stat="identity", position='fill') +
+  scale_x_discrete(labels = c("Democrat\nNot Elected","Democrat\nElected","Republican\nNot Elected","Republican\nElected")) +
+  theme_bw() +
+  theme(axis.title = element_blank()) +
+  scale_fill_brewer(palette = "Set2", name = "Organization Type", labels = c("Corporation", "Labor organization", "Membership organization", "Trade association")) +
+  ggtitle("Interest Groups behind Transaction in Election Campaign")
 
 my_plot4
 
