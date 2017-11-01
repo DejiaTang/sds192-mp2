@@ -112,5 +112,11 @@ my_plot4
 ```
 
 ##  What we can learn from these data:
+The graphs presents the distibuton patterns of the contribution received by four types candaidates in 2011-2012 house election campaign, such as the findings that the contribution to republican is larger than the contribution to democrats, and the cooparations are the major source for the winner candidates.
 
-## Context / background useful in interpreting the graphic:
+
+## Context / background useful in interpreting the graphic:  
+For both democratcs and republicans, more money can buy more votes since campaign needs ads, mailings, and events to promote candidates.  
+Because republicans support free market and lower tax, the cooperations are the biggest force behind the republican who got elected.  
+One article [](https://www.usnews.com/news/articles/2010/10/29/5-of-7-biggest-super-pacs-support-democrats ) suggests that 5 of 7 biggest super PACs support democrats, and some of them spending money opposing republicans' campaign, so our graph shows that the republicans no matter got elected or not elected had a large proportion of expenditure opposing them. 
+
