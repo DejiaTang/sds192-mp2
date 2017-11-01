@@ -99,7 +99,7 @@ my_plot1 <- create_plot(df = df1, is_percentage = "y", y = df1$type_amt_mean, ti
 
 my_plot2 <- create_plot(df = df1, is_percentage = "n", y = df1$type_amt, title = "Distribution of Contributions Types in Election Campaign\n(Total in Dollar)")
 
-my_plot3 <- create_plot(df = df2, is_percentage = "y", y = df2$type_amt_mean, type='group', title = "Distribution of Interest Groups behind Contributions\nin Election Campaign (Percentage in Dollar)")
+my_plot3 <- create_plot(df = df2, is_percentage = "y", y = df2$type_amt_mean, type='group', title = "Distribution of Interest Groups behind Contributions\nin Election Campaign (Mean in Percentage)")
 
 my_plot4 <- create_plot(df = df2, is_percentage = "n", y = df2$type_amt, type='group', title = "Distribution of Interest Groups behind Contributions\nin Election Campaign (Total in Dollar)")
 ```
@@ -112,7 +112,7 @@ my_plot4
 ```
 
 ##  What we can learn from these data:
-The graphs presents the distibuton patterns of the contribution received by four types candaidates in 2011-2012 house election campaign, such as the findings that the contribution to republican is larger than the contribution to democrats, and the corporations are the major source for the winner candidates.
+The graphs presents the distibuton patterns of the contribution received by four types candaidates in 2011-2012 house election campaign, such as the findings that the contribution to republican is larger than the contribution to democrats, and the corporations are the major contribution source for the winner candidates.
 
 
 ## Context / background useful in interpreting the graphic:  
